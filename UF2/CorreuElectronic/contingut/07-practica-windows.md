@@ -1,21 +1,25 @@
 ## 6. Pràctica Windows Server 2022
 
-En aquesta pràctica, configurarem un servidor de correu utilitzant **hMailServer** en Windows Server 2022. L’objectiu és familiaritzar-se amb la configuració i gestió d’un servidor de correu en entorns Windows.
+En aquesta pràctica, configurarem un servidor de correu utilitzant **MailEnable Free Edition** en Windows Server 2022. L’objectiu és familiaritzar-se amb la configuració i gestió d’un servidor de correu en entorns Windows.
 
 ### Objectius de la pràctica
-1. Instal·lar i configurar **hMailServer**.
+1. Instal·lar i configurar **MailEnable Free Edition**.
 2. Crear dominis i comptes d'usuari.
 3. Configurar protocols SMTP, IMAP i POP3.
 4. Habilitar la seguretat amb TLS.
 5. Provar l’enviament i recepció de correus amb un client com **Thunderbird**.
-6. Opcional: Configurar DKIM i SPF.
+6. Opcional: Configurar SPF i altres configuracions DNS.
 
 ---
 
 ### Requisits previs
 - Una màquina amb **Windows Server 2022** instal·lat.
 - Accés a Internet.
-- Un domini disponible (real o fictici, per exemple `practiques.local`).
+- Un domini disponible (real o fictici, per exemple `practiques.local`). Important! Has de configurar el registres MX el domini per tal que apuntin a la IP de la teva màquina! Això es fa des de l'eina de DNS:
+   - Anar al teu domini.
+   - Punxar en New Mail Exchange (MX)
+   - Host or child domain: El teu domini,  per exemple `practiques.local`
+   - Fully qualified domain name of mail server: el nom de la teva màquina que apareix al servidor de noms,  per exemple `mail.practiques.local`
 - Certificats SSL/TLS (opcional).
 - Un client de correu com **Thunderbird** instal·lat en una màquina client.
 
@@ -23,157 +27,148 @@ En aquesta pràctica, configurarem un servidor de correu utilitzant **hMailServe
 
 ### Passos per a la pràctica
 
-#### 6.1. Instal·lació d’hMailServer
-1. **Descarregar hMailServer:**
-   - Visita [https://www.hmailserver.com](https://www.hmailserver.com) i descarrega l'última versió.
+#### 6.1. Instal·lació de MailEnable
+
+1. **Descarregar MailEnable Free Edition:**
+   - Visita [https://www.mailenable.com/standard_edition.asp](https://www.mailenable.com/standard_edition.asp) i descarrega l'última versió.
 
 2. **Instal·lació:**
    - Executa l’instal·lador i segueix les instruccions.
-   - Tria el motor de base de dades integrat (ideal per a pràctiques).
-   - Configura la contrasenya d’administrador.
+   - Selecciona la instal·lació bàsica (Standard Edition).
+   - Defineix la contrasenya d’administrador i el domini principal (p. ex., `practiques.local`).
 
 #### 6.2. Configuració inicial
-1. **Obrir l’administrador:**
-   - Inicia **hMailServer Administrator** i connecta’t al servidor local.
 
-2. **Crear un domini:**
-   - Ves a **Domains** > **Add...**.
-   - Escriu el nom del domini (p. ex., `practiques.local`) i guarda.
+1. **Obrir l’Eina d’Administració:**
+   - Inicia **MailEnable Administrator**.
+
+2. **Comprovar que s'ha creat el teu domini:**
+   - Ves a **Messaging Manager > Nom_del_postoffice > Post Offices**.
+   - Comprova que apareix el teu domini, si no apareix:
+      - Fes clic dret i selecciona **New Post Office**.
+      - Escriu el nom del domini (p. ex., `practiques.local`) i guarda.
 
 3. **Afegir comptes d’usuari:**
-   - Selecciona el domini creat i fes clic a **Accounts > Add...**.
-   - Crea almenys dues comptes (p. ex., `usuari1` i `usuari2`).
+   - Selecciona el domini creat i fes clic a **Mailboxes > New Mailbox**.
+   - Crea almenys dues comptes d'usuari (p. ex., `usuari1` i `usuari2`).
+   - Crea també un compte d'admin (p. ex., `usuariadmin` )
 
 #### 6.3. Configurar protocols
-1. **Activa SMTP, IMAP i POP3:**
-   - Ves a **Settings > Protocols** i assegura’t que tots els protocols estan activats.
 
-2. **Configura els ports:**
-   - SMTP: Port 25 (o 587 amb TLS).
-   - IMAP: Port 143 (o 993 amb TLS).
-   - POP3: Port 110 (o 995 amb TLS).
+1. **Activa els protocols necessaris:**
+   - Ves a **Servers > Services and Connectors**.
+   - Allà veuràs els diferents protocols, comprova que estan engegats: **SMTP**, **POP** i **IMAP**.
 
-#### 6.4. Habilitar TLS
-1. Genera o obté un certificat SSL/TLS.
-2. Ves a **Settings > Advanced > SSL Certificates**.
-3. Afegeix el certificat i vincula’l al servidor.
-4. Activa TLS en **Settings > Protocols**.
+2. **Revisa els ports:**
+   - Aquests són els ports per defecte:
+      - SMTP: Port 25 (o 587 amb TLS).
+      - IMAP: Port 143 (o 993 amb TLS).
+      - POP3: Port 110 (o 995 amb TLS).
+   - Veuràs que no està activat el SSL en cap dels ports. Deixa-ho sense activar.
 
 #### 6.5. Proves amb un client de correu
-1. Configura un client com **Thunderbird**:
+
+1. **Configura un client com Thunderbird:**
    - Afegeix un compte amb les credencials creades.
    - Configura els servidors entrant i sortint amb els ports corresponents.
-   - Activa TLS.
+   - No activis TLS.
 
-2. Prova l’enviament i recepció de correus entre els usuaris.
+2. **Prova l’enviament i recepció de correus entre els usuaris:**
+   - Envia un correu de `usuari1` a `usuari2` i verifica que es rep correctament.
 
 ---
+#### 6.4. Habilitar TLS
+
+1. **Generar o obtenir un certificat SSL/TLS:**
+   - Segueix l’[annex per crear un certificat](#annex-com-crear-un-certificat-ssl-tls).
+
+2. **Configura el certificat a MailEnable:**
+   - Ves a **Servers > Localhost > Properties > SSL**.
+   - Afegeix el certificat generat i selecciona’l per als protocols.
+
+3. **Activa TLS:**
+   - Configura l’ús de TLS a SMTP, IMAP i POP des de les opcions de cada servei.
+
+4. **Connecta amb SSL**
+   - Modifica els paràmetres de Thunderbird per tal de realitzar les connexions IMAP i SMTP amb TLS.
+
 
 ### Extensió opcional
-1. **Configurar DKIM:**
-   - Segueix els passos descrits en l’apartat DKIM d’hMailServer.
 
-2. **Configurar SPF:**
-   - Afegeix un registre SPF al DNS del domini.
+1. **Configurar SPF:**
+   - Afegeix un registre SPF al DNS del domini amb una configuració bàsica com:
+     ```
+     v=spf1 mx -all
+     ```
+
+2. **Configurar àlies:**
+   - Configura àlies de correu a **MailEnable Administrator** per redirigir correus a altres comptes.
 
 3. **Analitzar les capçaleres del correu:**
-   - Verifica que les configuracions de seguretat són correctes.
+   - Revisa les capçaleres per assegurar que la configuració és correcta.
 
 ---
 
 ### Resultats esperats
 - Els usuaris poden enviar i rebre correus electrònics amb seguretat.
 - Configuració dels protocols i certificats completada.
-- Comprensió pràctica del funcionament d’un servidor de correu en Windows Server 2022.
+- Comprensió pràctica del funcionament d’un servidor de correu amb MailEnable en Windows Server 2022.
 
 ---
 
 
-## Annex: Com Crear un Certificat SSL/TLS
+## Annex: Com crear un certificat SSL TLS
 
-Els certificats SSL/TLS són necessaris per xifrar les comunicacions entre el servidor de correu i els clients. A continuació es detallen els passos per generar un certificat auto-signat o obtenir-ne un a través d’una autoritat de certificació (CA).
+* Revisa la documentació de MailEnable: https://www.mailenable.com/documentation/10.0/Standard/Localhost_-_Secure_Sockets_Layer_(SSL)_encryption.html
 
-### Opció 1: Generar un certificat auto-signat
-Un certificat auto-signat és útil per a pràctiques o entorns interns.
+
+## Com Crear un Certificat SSL/TLS per a MailEnable a Windows
+
+Per habilitar la seguretat TLS a MailEnable, necessites un certificat SSL/TLS. A continuació s'explica com generar un certificat auto-signat o obtenir-ne un certificat reconegut per una autoritat de certificació (CA).
+
+---
+
+### Generar un certificat auto-signat
+Un certificat auto-signat és útil per a pràctiques o entorns interns, però no serà reconegut pels navegadors ni els clients de correu.
 
 #### Passos:
 
-1. **Obrir la terminal o el PowerShell:**
-   - En un servidor Windows, utilitza PowerShell.
-   - En un servidor Linux, utilitza la terminal.
+1. **Obrir el Microsoft Management Console (MMC):**
+   - Escriu `mmc` a la barra de cerca de Windows i prem Enter.
 
-2. **Executar el següent comandament amb OpenSSL:**
-   Si no tens OpenSSL instal·lat, descarrega’l i instal·la’l des de [openssl.org](https://www.openssl.org/).
+2. **Afegir el Snap-in de certificats:**
+   - A `File > Add/Remove Snap-in...`, selecciona **Certificates** i fes clic a **Add**.
+   - Tria **Computer Account** > **Local Computer**.
 
-   ```bash
-   openssl req -new -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt
-   ```
+3. **Generar un certificat auto-signat:**
+   - Ves a **Certificates (Local Computer) > Personal > Certificates**.
+   - Fes clic dret a **Certificates** i selecciona **All Tasks > Request New Certificate...**.
+   - Selecciona **Active Directory Enrollment Policy** i segueix els passos fins que aparegui l'opció **Create and Submit a Request to This CA**.
+   - Omple els detalls necessaris, com el nom comú (**Common Name**) que ha de coincidir amb el nom del domini (p. ex., `mail.exemple.com`).
 
-3. **Omplir els camps:**
-   - **Country Name (C):** Codi del país (ex: ES per Espanya).
-   - **State or Province Name (ST):** Província.
-   - **Locality Name (L):** Ciutat.
-   - **Organization Name (O):** Nom de l’organització.
-   - **Common Name (CN):** Nom del domini (ex: mail.exemple.com).
+4. **Exporta el certificat:**
+   - Selecciona el certificat generat i fes clic dret > **All Tasks > Export...**.
+   - Tria **Exportar la clau privada** i desar el certificat amb el format `.pfx`.
+   - Defineix una contrasenya per protegir la clau privada.
 
-4. **Resultat:**
-   - Es generen dos fitxers:
-     - `server.key`: Clau privada.
-     - `server.crt`: Certificat auto-signat.
+5. **Integració amb MailEnable:**
+   - Afegeix el certificat exportat al servidor seguint els passos indicats més avall.
 
-5. **Integració amb el servidor de correu:**
-   - Afegeix aquests fitxers a la configuració del servidor, com explicat a l’apartat de configuració TLS.
 
----
+### Configurar el Certificat a MailEnable
 
-### Opció 2: Obtenir un certificat d’una CA (Let's Encrypt)
+1. **Obrir MailEnable Administrator:**
+   - Ves a **Servers > Localhost > Properties**.
 
-#### Avantatges:
-- Els certificats de Let's Encrypt són gratuïts i reconeguts per la majoria de navegadors i clients de correu.
+2. **Afegir el certificat:**
+   - A la pestanya **SSL**, selecciona **Install Certificate...**.
+   - Busca el fitxer `.pfx` exportat i introdueix la contrasenya si cal.
 
-#### Passos:
+3. **Assignar el certificat als protocols:**
+   - Torna a **Servers > Services and Connectors**.
+   - Selecciona **SMTP, IMAP o POP**, ves a les propietats i habilita l’ús de TLS/SSL amb el certificat.
 
-1. **Instal·lar Certbot:**
-   - **Ubuntu/Linux:**
-     ```bash
-     sudo apt update
-     sudo apt install certbot
-     ```
-   - **Windows:** Descarrega’l des de [Certbot](https://certbot.eff.org/).
-
-2. **Executar Certbot per al domini:**
-   ```bash
-   sudo certbot certonly --standalone -d mail.exemple.com
-   ```
-   - Substitueix `mail.exemple.com` pel domini del teu servidor de correu.
-
-3. **Resultat:**
-   - Certbot generarà els fitxers del certificat:
-     - **`/etc/letsencrypt/live/mail.exemple.com/fullchain.pem`**: Certificat.
-     - **`/etc/letsencrypt/live/mail.exemple.com/privkey.pem`**: Clau privada.
-
-4. **Integració amb el servidor de correu:**
-   - Afegeix aquests fitxers al servidor seguint les instruccions del programari.
-
-5. **Renovació automàtica:**
-   - Let's Encrypt requereix renovació cada 90 dies. Configura la renovació automàtica:
-     ```bash
-     sudo certbot renew --quiet
-     ```
+4. **Reinicia els serveis:**
+   - Reinicia els serveis afectats per assegurar-te que el certificat s’aplica correctament.
 
 ---
-
-### Com verificar el certificat
-
-1. **Verificació local:**
-   Utilitza OpenSSL:
-   ```bash
-   openssl s_client -connect mail.exemple.com:443
-   ```
-
-2. **Eines en línia:**
-   Utilitza serveis com [SSL Labs](https://www.ssllabs.com/ssltest/) per assegurar-te que el certificat està configurat correctament.
-
----
-
-Amb aquests passos, podràs generar un certificat SSL/TLS i integrar-lo al servidor per garantir una comunicació segura.
