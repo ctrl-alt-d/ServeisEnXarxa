@@ -15,9 +15,9 @@
    - 3.2. Instal·lació d'un servidor de correu Windows Server 2022
    - 3.3. Instal·lació d'un servidor de correu Ubuntu
 
-## 4. [Configuració de DKIM](./contingut/04-DKIM-Windows.md)
-   - 4.1. Configuració de DKIM en Windows (hMailServer)
-   - 4.2. Configuració de DKIM en Ubuntu (Mail-in-a-Box)
+## 4. Configuració de DKIM
+   - 4.1. Configuració de [DKIM en Windows](./contingut/04-DKIM-Windows.md) (hMailServer)
+   - 4.2. Configuració de [DKIM en Ubuntu](./contingut/04-DKIM-Ubuntu.md) (Mail-in-a-Box)
 
 ## 5. [El Problema de l'Spam](./contingut/05-spam.md)
    - 5.1. Què és l'spam?
