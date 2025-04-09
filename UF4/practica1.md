@@ -178,6 +178,15 @@ ssh-copy-id alumne@192.168.1.105
 
 Et demanarà la contrasenya **una sola vegada**. Després d’això, el servidor ja guardarà la clau pública a `~/.ssh/authorized_keys`.
 
+Nota, a Windows no tens disponible el `ssh-copy-id` llavors ho has de copiar a mà, has de posar el contingut de la clau pública `$env:USERPROFILE\.ssh\id_rsa.pub` dins el fitxer de configuració de l'ssh del servidor `~/.ssh/authorized_keys`
+
+
+O ho pots fer tot amb aquesta linia:
+
+```bash
+type $env:USERPROFILE\.ssh\id_rsa.pub | ssh nom_usuari@ip_del_servidor "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+```
+
 ---
 
 #### 3. Provar la connexió
