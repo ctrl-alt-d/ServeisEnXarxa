@@ -26,22 +26,22 @@
 
 En el sistema que actuarà com a **servidor** (equip al qual ens connectarem):
 
-'''bash
+```bash
 sudo apt update
 sudo apt install openssh-server
-'''
+```
 
 Per comprovar si el servei està actiu:
 
-'''bash
+```bash
 sudo systemctl status ssh
-'''
+```
 
 En cas que no estigui actiu, l’activem:
 
-'''bash
+```bash
 sudo systemctl enable --now ssh
-'''
+```
 
 ---
 
@@ -49,9 +49,9 @@ sudo systemctl enable --now ssh
 
 Cal saber la IP del servidor per connectar-nos-hi des del client:
 
-'''bash
+```bash
 ip a
-'''
+```
 
 Apunta la IP local del dispositiu (ex: `192.168.1.105`).
 
@@ -61,15 +61,15 @@ Apunta la IP local del dispositiu (ex: `192.168.1.105`).
 
 Des de l’altre equip (el **client**), obre un terminal i executa:
 
-'''bash
+```bash
 ssh nom_usuari@ip_del_servidor
-'''
+```
 
 Exemple:
 
-'''bash
+```bash
 ssh alumne@192.168.1.105
-'''
+```
 
 Accepta la connexió i introdueix la contrasenya quan es demani.
 
@@ -79,11 +79,11 @@ Accepta la connexió i introdueix la contrasenya quan es demani.
 
 Un cop connectat, prova comandes bàsiques com:
 
-'''bash
+```bash
 whoami
 hostname
 uptime
-'''
+```
 
 ---
 
@@ -91,21 +91,21 @@ uptime
 
 Prova d’afegir un usuari des del client SSH:
 
-'''bash
+```bash
 sudo adduser prova
-'''
+```
 
 Després, tanca la sessió amb:
 
-'''bash
+```bash
 exit
-'''
+```
 
 I intenta accedir com el nou usuari:
 
-'''bash
+```bash
 ssh prova@192.168.1.105
-'''
+```
 
 ---
 
@@ -113,9 +113,9 @@ ssh prova@192.168.1.105
 
 Edita el fitxer de configuració:
 
-'''bash
+```bash
 sudo nano /etc/ssh/sshd_config
-'''
+```
 
 Algunes opcions recomanades a revisar:
 
@@ -125,9 +125,9 @@ Algunes opcions recomanades a revisar:
 
 Després de fer canvis:
 
-'''bash
+```bash
 sudo systemctl restart ssh
-'''
+```
 
 ---
 
@@ -147,9 +147,9 @@ Aquest mètode és **més segur i pràctic**, sobretot si s’automatitzen conne
 
 Al dispositiu **client** (des d’on et vols connectar), executa:
 
-'''bash
+```bash
 ssh-keygen
-'''
+```
 
 Prem `Enter` a totes les preguntes per acceptar la ruta per defecte i deixar la clau sense contrasenya (per ara).
 
@@ -166,15 +166,15 @@ Nota: a Windows ho pots fer des de la powershell.
 
 Utilitza la següent comanda:
 
-'''bash
+```bash
 ssh-copy-id nom_usuari@ip_del_servidor
-'''
+```
 
 Exemple:
 
-'''bash
+```bash
 ssh-copy-id alumne@192.168.1.105
-'''
+```
 
 Et demanarà la contrasenya **una sola vegada**. Després d’això, el servidor ja guardarà la clau pública a `~/.ssh/authorized_keys`.
 
@@ -193,9 +193,9 @@ type $env:USERPROFILE\.ssh\id_rsa.pub | ssh nom_usuari@ip_del_servidor "mkdir -p
 
 Ara pots connectar-te **sense que et demani contrasenya**:
 
-'''bash
+```bash
 ssh alumne@192.168.1.105
-'''
+```
 
 ---
 
@@ -203,22 +203,22 @@ ssh alumne@192.168.1.105
 
 Per obligar l’ús de claus i **evitar connexions amb contrasenya**, edita el fitxer del servidor:
 
-'''bash
+```bash
 sudo nano /etc/ssh/sshd_config
-'''
+```
 
 I canvia (o afegeix) les següents línies:
 
-'''bash
+```bash
 PasswordAuthentication no
 PubkeyAuthentication yes
-'''
+```
 
 Després, reinicia el servei:
 
-'''bash
+```bash
 sudo systemctl restart ssh
-'''
+```
 
 ⚠️ **Important:** Assegura’t que pots connectar-te amb la clau abans de desactivar les contrasenyes!
 
@@ -246,9 +246,9 @@ sudo systemctl restart ssh
 
 Assegura’t que el servidor Linux tingui el servei SSH en funcionament i obté la seva IP amb:
 
-'''bash
+```bash
 ip a
-'''
+```
 
 Apunta l’adreça IP local (ex: `192.168.1.105`).
 
