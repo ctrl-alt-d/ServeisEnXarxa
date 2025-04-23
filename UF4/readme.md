@@ -40,24 +40,6 @@ A continuació, es detallen els resultats d’aprenentatge i els continguts espe
 
 ## Pràctiques proposades
 
-### Pràctica 1: Accés remot per terminal amb SSH
-**Descripció:**  
-Configurarem un servidor SSH en un sistema Linux i aprendrem a connectar-nos-hi des d’un altre dispositiu utilitzant un client de terminal. També explorarem paràmetres bàsics de configuració, usuaris i comprovació de l’estat del servei.
-
----
-
-### Pràctica 2: Accés remot gràfic amb VNC
-**Descripció:**  
-Instal·larem i configurarem un servidor VNC per permetre l'accés remot gràfic a un sistema Linux. Es provarà la connexió des d’un altre sistema amb un client VNC i es revisaran aspectes de rendiment, seguretat i funcionalitat.
-
----
-
-### Pràctica 3: Muntatge d'una VPN per accés remot segur
-**Descripció:**  
-Configurarem una xarxa privada virtual (VPN) per permetre connexions remotes segures entre dispositius a través d’Internet. Es farà servir una eina com **OpenVPN** o **WireGuard**, i es comprovarà la connectivitat i l’accés als recursos de xarxa.
-
----
-
-### Pràctica 4: Administració remota d’un Windows Server amb Remote Desktop
-**Descripció:**  
-Es prepararà un sistema Windows Server i s'activarà el servei de **Remote Desktop** (RDP). Els alumnes aprendran a connectar-s’hi des d’un client Windows i a realitzar tasques bàsiques d’administració com gestió d’usuaris, serveis i recursos compartits.
+* [Pràctica ssh](./practica1.md)
+* [Pràctica Remote Desktop Chrome](./practica2.md)
+* [Pràctica VPN](./practica3.md)
